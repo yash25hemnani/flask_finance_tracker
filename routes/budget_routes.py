@@ -63,7 +63,7 @@ def update_budget():
             return jsonify({
                 "message": "Budget updated successfully",
                 "data": updated_budget
-            }), 200
+            }), 201
     else:
         return jsonify({
             "message": "Budget not found"
