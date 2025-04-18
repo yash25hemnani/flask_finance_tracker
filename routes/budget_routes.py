@@ -21,6 +21,8 @@ def get_budget():
     month = request.args.get("month")
     year = request.args.get("year")
     category = request.args.get("category")
+    
+    print(month, year, category)
 
     if not month or not year:
         return jsonify({"error": "Both month and year are required."}), 400
