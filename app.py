@@ -6,7 +6,12 @@ def create_app():
     app = Flask(__name__)
     register_routes(app)
     
-    CORS(app, resources={r"/api/*": {"origins": ["https://next-finance-tracker-six.vercel.app", "http://127.0.0.1:3000"]}})
+    CORS(app, resources={r"/api/*": {
+        "origins": ["https://next-finance-tracker-six.vercel.app", "http://127.0.0.1:3000"],
+        "methods": ["GET", "POST", "PATCH", "DELETE"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True
+    }})
 
     @app.route('/')
     def index():
