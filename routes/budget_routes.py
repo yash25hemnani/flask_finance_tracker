@@ -59,6 +59,8 @@ def update_budget():
 
     if updated_budget:
             updated_budget = {k: object_id_to_str(v) for k, v in updated_budget.items()}
+            
+            print(updated_budget)
 
             return jsonify({
                 "message": "Budget updated successfully",
