@@ -50,7 +50,13 @@ def update_budget():
     if not month or not year or not category:
         return jsonify({"error": "Month, Year, and Category required"}), 400
 
-    update_fields = {k: v for k, v in data.items() if k not in ["month", "year", "category"]}
+    update_fields = {}
+    for k, v in data.items():
+        if k not in ["month", "year", "category"]:
+            if k == "amount":
+                update_fields[k] = int(v) 
+            else:
+                update_fields[k] = v
 
     updated_budget = budget_collection.find_one_and_update(
         {"month": month, "year": year, "category": category},
