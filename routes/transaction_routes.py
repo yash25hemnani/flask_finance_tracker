@@ -95,18 +95,17 @@ def get_transaction_by_id(id):
 
 # PATCH: Update a Transaction
 @transaction_bp.route('/<string:id>', methods=['PATCH'])
-def update_transaction():
+def update_transaction(id):
     try:
         data = request.get_json()
-        _id = data.get('_id')
 
-        if not _id or not ObjectId.is_valid(_id):
+        if not id or not ObjectId.is_valid(id):
             return jsonify({"error": "Valid _id is required"}), 400
 
         update_fields = {k: v for k, v in data.items() if k != '_id'}
 
         updated = transactions_collection.find_one_and_update(
-            {"_id": ObjectId(_id)},
+            {"_id": ObjectId(id)},
             {"$set": update_fields},
             return_document=True
         )
