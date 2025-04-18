@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from lib import db_connect
+from configure import db_connect
 from bson import ObjectId
 
 budget_bp = Blueprint('budget_bp', __name__)
