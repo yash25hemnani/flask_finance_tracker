@@ -94,7 +94,7 @@ def get_transaction_by_id(id):
 
 
 # PATCH: Update a Transaction
-@transaction_bp.route('/', methods=['PATCH'])
+@transaction_bp.route('/<string:id>', methods=['PATCH'])
 def update_transaction():
     try:
         data = request.get_json()
