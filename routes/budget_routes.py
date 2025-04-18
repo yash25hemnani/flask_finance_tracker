@@ -18,8 +18,8 @@ def object_id_to_str(obj):
 # GET: Fetch budget items
 @budget_bp.route("/", methods=["GET"])
 def get_budget():
-    month = request.args.get("month")
-    year = request.args.get("year")
+    month = int(request.args.get("month"))
+    year = int(request.args.get("year"))
     category = request.args.get("category")
     
     print(month, year, category)
@@ -43,8 +43,8 @@ def get_budget():
 def update_budget():
     data = request.get_json()
 
-    month = data.get("month")
-    year = data.get("year")
+    month = int(data.get("month"))
+    year = int(data.get("year"))
     category = data.get("category")
 
     if not month or not year or not category:
