@@ -31,11 +31,22 @@ def get_category_wise_spending():
 
         category_wise_spending = list(transactions_collection.aggregate([
             {
+                "$addFields": {
+                    "parsedDate": {
+                        "$cond": {
+                            "if": { "$eq": [{ "$type": "$date" }, "string"] },
+                            "then": { "$dateFromString": { "dateString": "$date" } },
+                            "else": "$date"
+                        }
+                    }
+                }
+            },
+            {
                 "$match": {
                     "$expr": {
                         "$and": [
-                            { "$eq": [{ "$month": "$date" }, int(month)] },
-                            { "$eq": [{ "$year": "$date" }, int(year)] }
+                            { "$eq": [{ "$month": "$parsedDate" }, int(month)] },
+                            { "$eq": [{ "$year": "$parsedDate" }, int(year)] }
                         ]
                     }
                 }

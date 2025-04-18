@@ -31,30 +31,41 @@ def get_budget_summary():
 
         # Aggregation for actual amount
         amount_agg = transactions_collection.aggregate([
-            {
-                "$match": {
-                    "$expr": {
-                        "$and": [
-                            { "$eq": [{ "$month": "$date" }, int(month)] },
-                            { "$eq": [{ "$year": "$date" }, int(year)] }
-                        ]
-                    },
-                    "category": category
-                }
-            },
-            {
-                "$group": {
-                    "_id": None,
-                    "totalAmount": { "$sum": "$amount" }
-                }
-            },
-            {
-                "$project": {
-                    "_id": 0,
-                    "totalAmount": 1
+        {
+            "$addFields": {
+                "parsedDate": {
+                    "$cond": {
+                        "if": { "$eq": [{ "$type": "$date" }, "string"] },
+                        "then": { "$dateFromString": { "dateString": "$date" } },
+                        "else": "$date"
+                    }
                 }
             }
-        ])
+        },
+        {
+            "$match": {
+                "$expr": {
+                    "$and": [
+                        { "$eq": [{ "$month": "$parsedDate" }, int(month)] },
+                        { "$eq": [{ "$year": "$parsedDate" }, int(year)] },
+                        { "$eq": ["$category", category] }
+                    ]
+                }
+            }
+        },
+        {
+            "$group": {
+                "_id": None,
+                "totalAmount": { "$sum": "$amount" }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "totalAmount": 1
+            }
+        }
+    ])
 
         amount_result = list(amount_agg)
         print(amount_result)
