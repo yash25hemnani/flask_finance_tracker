@@ -6,6 +6,11 @@ def create_app():
     app = Flask(__name__)
     register_routes(app)
     CORS(app)
+
+    @app.route('/')
+    def index():
+        return "App is running!"
+
     return app
 
 if __name__ == '__main__':
